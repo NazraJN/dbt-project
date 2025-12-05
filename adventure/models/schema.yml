@@ -1,0 +1,219 @@
+version: 2
+
+models:
+
+  # ========== FACT TABLE ==========
+  - name: fact_sales
+    description: >
+      Central fact table capturing all sales transactions with associated dimensions.
+      One row per order-product combination with metrics, temporal context, and quality ratings.
+    columns:
+      - name: sales_id
+        description: Unique surrogate key for each sales fact record.
+        tests:
+          - unique
+          - not_null
+      - name: Order_id
+        description: Order identifier from source system.
+        tests:
+          - not_null
+      - name: Customer_id
+        description: Customer identifier from source system.
+        tests:
+          - not_null
+      - name: Date_id
+        description: Foreign key to Date_Table dimension.
+        tests:
+          - not_null
+      - name: Product_id
+        description: Product identifier from source system.
+        tests:
+          - not_null
+      - name: Review_id
+        description: Foreign key to Review dimension (0 if no review exists).
+      - name: Activity_id
+        description: Foreign key to web activity dimension (reserved for future use).
+      - name: Quantity
+        description: Number of units ordered.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+      - name: Total_amount
+        description: Total order amount.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+      - name: Product_price
+        description: Unit price of the product at order time.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+      - name: Avg_product_rating
+        description: Average rating for this product (0 if no reviews).
+      - name: Avg_customer_rating
+        description: Average rating given by this customer (0 if no reviews).
+      - name: Customer_order_count
+        description: Total number of orders placed by this customer.
+      - name: PaymentMethod
+        description: Payment method used for the order.
+      - name: created_at
+        description: Timestamp when the record was created.
+      - name: updated_at
+        description: Timestamp when the record was last updated.
+
+  # ========== DIMENSION TABLES ==========
+  - name: dim_date
+    description: >
+      Date dimension providing temporal attributes for analysis by year, quarter, month, week, and day.
+    columns:
+      - name: date_id
+        description: Surrogate key for date dimension.
+        tests:
+          - unique
+          - not_null
+      - name: Order_date
+        description: Calendar date of the order.
+        tests:
+          - not_null
+      - name: order_year
+        description: Year of the order.
+      - name: Quarter
+        description: Quarter of the year (1-4).
+      - name: Order_month
+        description: Month of the year (1-12).
+      - name: Order_day
+        description: Day of the month (1-31).
+      - name: Day_abbr
+        description: Abbreviated day of week name (Mon, Tue, etc.).
+      - name: Day_of_the_year
+        description: Day number within the year (1-365/366).
+      - name: Week
+        description: Week number of the year (1-52/53).
+
+  - name: dim_review
+    description: >
+      Review dimension summarizing product reviews with aggregate ratings and review text.
+    columns:
+      - name: Product_id
+        description: Product identifier.
+        tests:
+          - unique
+          - not_null
+      - name: avg_rating
+        description: Average rating for this product.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+                max_value: 5
+      - name: Total_reviews
+        description: Total number of reviews for this product.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+      - name: Review_text
+        description: Concatenated review texts for the product.
+
+  - name: dim_webtraffic
+    description: >
+      Web traffic dimension aggregating customer interactions by page and action type.
+    columns:
+      - name: Customer_id
+        description: Customer identifier.
+        tests:
+          - not_null
+      - name: Page
+        description: Web page visited.
+        tests:
+          - not_null
+      - name: Action_taken
+        description: Type of action taken (click, view, purchase, etc.).
+        tests:
+          - not_null
+      - name: Action_count
+        description: Number of times this action was taken on this page by this customer.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+
+  - name: dim_platform_sentiments
+    description: >
+      Platform sentiments dimension aggregating sentiment data by social media platform.
+    columns:
+      - name: Platform
+        description: Social media platform name.
+        tests:
+          - not_null
+      - name: Sentiment
+        description: Sentiment classification (positive, negative, neutral).
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              arguments:
+                value_set: ['positive', 'negative', 'neutral']
+      - name: Sentiment_count
+        description: Number of posts with this sentiment on this platform.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+
+snapshots:
+  - name: customers_data_snapshot
+    description: >
+      SCD2 snapshot storing historical versions of customer records.
+    columns:
+      - name: dbt_scd_id
+        description: Surrogate SCD Type 2 identifier.
+        tests:
+          - unique
+          - not_null
+
+      - name: dbt_valid_from
+        description: Start timestamp of the record's validity window.
+        tests:
+          - not_null
+
+      - name: dbt_valid_to
+        description: End timestamp of the validity window (NULL = active).
+  
+  - name: products_snapshot
+    description: >
+      SCD2 snapshot storing historical versions of product records.
+    columns:
+      - name: ProductID
+        description: Source-system product identifier.
+        tests:
+          - not_null
+      - name: ProductName
+        description: Product display name.
+      - name: Category
+        description: Product category or classification.
+      - name: Stock
+        description: On-hand stock quantity.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+      - name: UnitPrice
+        description: Unit price for the product.
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+      - name: dbt_scd_id
+        description: dbt-generated SCD Type 2 surrogate key.
+        tests:
+          - unique
+          - not_null
+      - name: dbt_valid_from
+        description: Start timestamp when this version became effective.
+        tests:
+          - not_null
+      - name: dbt_valid_to
+        description: End timestamp when this version was superseded (NULL if current).

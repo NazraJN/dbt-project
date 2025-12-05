@@ -1,0 +1,30 @@
+version: 2
+
+sources:
+  - name: adv
+    schema: Raw
+    tables:
+      - name: salesorderdetail
+        identifier: salesorderdetail
+      - name: customer
+        identifier: customer
+      - name: product
+        identifier: product  
+      - name: salesorderheader
+        identifier: salesorderheader
+      - name: productmodel
+        identifier: productmodel
+      - name: address
+        identifier: address
+      - name: customers
+        identifier: customers_data
+      - name: orders
+        identifier: orders_data
+      - name: products_data
+        identifier: products_data
+      - name: reviews
+        identifier: reviews
+      - name: social_media
+        identifier: social_media
+      - name: weblogs
+        identifier: weblogs

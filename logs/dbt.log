@@ -1,0 +1,44 @@
+[0m16:12:12.198975 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000258FE024980>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000258FEAA16D0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000258FF10FED0>]}
+
+
+============================== 16:12:12.208808 | a798171f-4ca8-4854-9eea-5ce382181f8a ==============================
+[0m16:12:12.208808 [info ] [MainThread]: Running with dbt=1.11.0-b4
+[0m16:12:12.210042 [debug] [MainThread]: running dbt with arguments {'use_colors': 'True', 'printer_width': '80', 'no_print': 'None', 'write_json': 'True', 'profiles_dir': 'C:\\Users\\Nazra\\.dbt', 'warn_error': 'None', 'static_parser': 'True', 'fail_fast': 'False', 'partial_parse': 'True', 'send_anonymous_usage_stats': 'True', 'indirect_selection': 'eager', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'log_path': 'logs', 'use_experimental_parser': 'False', 'version_check': 'True', 'introspect': 'True', 'quiet': 'False', 'empty': 'None', 'log_cache_events': 'False', 'debug': 'False', 'log_format': 'default', 'invocation_command': 'dbt init adventure', 'cache_selected_only': 'False', 'target_path': 'None'}
+[0m16:12:12.253572 [debug] [MainThread]: Starter project path: C:\Users\Nazra\Documents\phoenix\phoenix_venv\Lib\site-packages\dbt\include\starter_project
+[0m16:12:12.300741 [info ] [MainThread]: 
+Your new dbt project "adventure" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m16:12:12.301792 [info ] [MainThread]: Setting up your profile.
+[0m16:25:14.502678 [info ] [MainThread]: Profile adventure written to C:\Users\Nazra\.dbt\profiles.yml using target's profile_template.yml and your supplied values. Run 'dbt debug' to validate the connection.
+[0m16:25:14.523366 [debug] [MainThread]: Command `dbt init` succeeded at 16:25:14.522418 after 782.67 seconds
+[0m16:25:14.526542 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000258810A3950>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000258FF4B5010>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000258810F1BF0>]}
+[0m16:25:14.528654 [debug] [MainThread]: Flushing usage events
+[0m16:25:16.388983 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m12:04:37.814679 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002559FB44980>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000255A05C16D0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000255A0C33ED0>]}
+
+
+============================== 12:04:37.822773 | 88180238-8c5c-4fec-bd97-1585a78049ad ==============================
+[0m12:04:37.822773 [info ] [MainThread]: Running with dbt=1.11.0-b4
+[0m12:04:37.823809 [debug] [MainThread]: running dbt with arguments {'profiles_dir': 'C:\\Users\\Nazra\\.dbt', 'use_colors': 'True', 'no_print': 'None', 'printer_width': '80', 'write_json': 'True', 'warn_error': 'None', 'log_path': 'logs', 'fail_fast': 'False', 'indirect_selection': 'eager', 'send_anonymous_usage_stats': 'True', 'static_parser': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'partial_parse': 'True', 'version_check': 'True', 'use_experimental_parser': 'False', 'quiet': 'False', 'introspect': 'True', 'empty': 'None', 'log_cache_events': 'False', 'debug': 'False', 'log_format': 'default', 'invocation_command': 'dbt deps', 'cache_selected_only': 'False', 'target_path': 'None'}
+[0m12:04:37.824709 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path C:\Users\Nazra\Documents\phoenix\dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m12:04:37.826259 [debug] [MainThread]: Command `dbt deps` failed at 12:04:37.826043 after 0.18 seconds
+[0m12:04:37.826761 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000255A0C6DCD0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000255A0C90DD0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000255A0AE1D00>]}
+[0m12:04:37.827274 [debug] [MainThread]: Flushing usage events
+[0m12:04:39.009408 [debug] [MainThread]: An error was encountered while trying to flush usage events
