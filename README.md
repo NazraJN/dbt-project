@@ -1,7 +1,7 @@
 # Phoenix Adventure Data Warehouse (dbt)
 
 A modern analytics warehouse built using dbt, Snowflake, and dimensional modeling (star schema).  
-Includes SCD2 snapshots, temporal joins, fact/dimension modeling, and optional ML enrichment.
+Includes SCD2 snapshots, temporal joins and  fact/dimension modeling.
 
 ## Features
 - SCD2 historical dimensions (customers, products)
