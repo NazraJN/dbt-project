@@ -14,9 +14,9 @@ Includes SCD2 snapshots, temporal joins, fact/dimension modeling, and optional M
 - Snowflake
 
 ## Run the project
-dbt snapshot
-
 dbt run
+
+dbt snapshot
 
 dbt test
 
