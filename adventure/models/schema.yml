@@ -64,34 +64,6 @@ models:
       - name: updated_at
         description: Timestamp when the record was last updated.
 
-  - name: dim_date
-    description: >
-      Date dimension providing temporal attributes for analysis by year, quarter, month, week, and day.
-    columns:
-      - name: date_id
-        description: Surrogate key for date dimension.
-        tests:
-          - unique
-          - not_null
-      - name: Order_date
-        description: Calendar date of the order.
-        tests:
-          - not_null
-      - name: order_year
-        description: Year of the order.
-      - name: Quarter
-        description: Quarter of the year (1-4).
-      - name: Order_month
-        description: Month of the year (1-12).
-      - name: Order_day
-        description: Day of the month (1-31).
-      - name: Day_abbr
-        description: Abbreviated day of week name (Mon, Tue, etc.).
-      - name: Day_of_the_year
-        description: Day number within the year (1-365/366).
-      - name: Week
-        description: Week number of the year (1-52/53).
-
   - name: fact_reviews
     description: >
       Contains summarized product reviews with aggregate ratings and review text.
@@ -165,9 +137,7 @@ models:
   # ========== DIMENSION TABLES ==========
   - name: dim_date
     description: >
-      Date dimension table generated from distinct order dates in the orders dataset.
-      Provides enriched temporal attributes such as year, quarter, month, day, week, 
-      and day-of-year to support time-based analytics in fact tables.
+      Date dimension providing temporal attributes for analysis by year, quarter, month, week, and day.
       One row per unique calendar date.
 
     columns:
