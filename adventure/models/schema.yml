@@ -64,7 +64,6 @@ models:
       - name: updated_at
         description: Timestamp when the record was last updated.
 
-  # ========== DIMENSION TABLES ==========
   - name: dim_date
     description: >
       Date dimension providing temporal attributes for analysis by year, quarter, month, week, and day.
@@ -162,6 +161,131 @@ models:
           - dbt_expectations.expect_column_values_to_be_between:
               arguments:
                 min_value: 2
+
+  # ========== DIMENSION TABLES ==========
+  - name: dim_date
+    description: >
+      Date dimension table generated from distinct order dates in the orders dataset.
+      Provides enriched temporal attributes such as year, quarter, month, day, week, 
+      and day-of-year to support time-based analytics in fact tables.
+      One row per unique calendar date.
+
+    columns:
+      - name: date_id
+        description: >
+          Surrogate key generated using row_number() to uniquely identify each date.
+        tests:
+          - unique
+          - not_null
+
+      - name: Order_date
+        description: Original calendar date extracted from the orders table.
+        tests:
+          - unique
+          - not_null
+
+      - name: order_year
+        description: Numeric year extracted from Order_date.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 2000
+
+      - name: Quarter
+        description: Quarter of the year (1–4).
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              arguments:
+                value_set: [1, 2, 3, 4]
+
+      - name: Order_month
+        description: Month of the year (1–12).
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 1
+                max_value: 12
+
+      - name: Order_day
+        description: Day of the month (1–31).
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 1
+                max_value: 31
+
+      - name: Day_abbr
+        description: Abbreviated day-of-week name (e.g., Mon, Tue, Wed).
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              arguments:
+                value_set: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+
+      - name: Day_of_the_year
+        description: Numeric day number of the year (1–365/366).
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 1
+                max_value: 366
+
+      - name: Week
+        description: Week number of the year as defined by system calendar.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 1
+                max_value: 53
+
+  - name: dim_social_media
+    description: >
+      Standardized social media events table generated from the raw social media dataset.
+      Performs cleaning, normalization, and sentiment recategorization into the canonical
+      classes: positive, negative, and neutral. This model prepares raw social media posts
+      for downstream sentiment analysis and platform-level aggregations.
+
+    columns:
+      - name: event_ts
+        description: >
+          Timestamp of the social media post, converted to a timezone-neutral format.
+        tests:
+          - not_null
+
+      - name: platform_normalized
+        description: >
+          Social media platform cleaned and normalized to lowercase for consistency.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_not_match_regex:
+              arguments:
+                regex: '[A-Z]'   
+
+      - name: content_clean
+        description: >
+          Cleaned content of the social media post with whitespace trimmed. Represents the
+          original text submitted by the user after preprocessing.
+        tests:
+          - not_null
+
+      - name: sentiment
+        description: >
+          Standardized sentiment classification mapped to one of three categories:
+          'positive', 'negative', or 'neutral'. Derived from multiple raw variants such
+          as 'pos', '1', '+', 'neg', '-1', etc.
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              arguments:
+                value_set: ['positive', 'negative', 'neutral']
+
+  # ========== SNAPSHOTS ==========
 
 snapshots:
   - name: customers_data_snapshot

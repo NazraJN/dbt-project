@@ -23,7 +23,7 @@ cleaned as (
 
 standardized as (
     select
-        social_id,
+       -- social_id,
         event_ts,
         platform_normalized,
         content_clean,
