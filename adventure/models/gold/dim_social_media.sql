@@ -13,7 +13,7 @@ with raw as (
 
 cleaned as (
     select
-        --md5(concat(cast(timestamp as varchar), '||', lower(trim(platform)), '||', content)) as social_id,
+        md5(concat(cast(timestamp as varchar), '||', lower(trim(platform)), '||', content)) as social_id,
         cast(timestamp as timestamp_ntz) as event_ts,
         lower(trim(platform)) as platform_normalized,
         trim(content) as content_clean,
@@ -23,7 +23,7 @@ cleaned as (
 
 standardized as (
     select
-       -- social_id,
+        social_id,
         event_ts,
         platform_normalized,
         content_clean,
