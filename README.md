@@ -7,7 +7,6 @@ Includes SCD2 snapshots, temporal joins and  fact/dimension modeling.
 - SCD2 historical dimensions (customers, products)
 - Order, review, social media & clickstream facts
 - Temporal joins for accurate point-in-time analysis
-- Incremental processing for large event datasets
 
 ## Tech Stack
 - dbt
