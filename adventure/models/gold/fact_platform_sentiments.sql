@@ -10,3 +10,4 @@ select
     count(*) as Sentiment_count
 from {{ ref('fact_social_media_enriched') }}
 group by platform_normalized, sentiment
+order by platform_normalized, sentiment

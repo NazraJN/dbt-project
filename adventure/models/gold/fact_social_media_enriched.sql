@@ -5,7 +5,7 @@
 
 with base as (
     select *
-    from {{ ref('fact_social_media') }}
+    from {{ ref('dim_social_media') }}
 ),
 
 enriched as (
@@ -22,19 +22,7 @@ enriched as (
             when sentiment = 'negative' then -1
             when sentiment = 'neutral' then 0
             else null
-        end as sentiment_score,
-
-        -- simple product-pattern detection 
-        regexp_substr(content_clean, '([A-Z0-9]{2,}-[A-Z0-9]{2,})', 1, 1, 'i') as detected_product,
-
-        -- boolean flag for urls
-        case when lower(content_clean) like '%http%' or lower(content_clean) like '%www.%' then true else false end as has_url,
-
-        -- approximate word count
-        case
-            when trim(content_clean) = '' then 0
-            else length(trim(content_clean)) - length(replace(trim(content_clean), ' ', '')) + 1
-        end as word_count
+        end as sentiment_score
     from base
 )
 

@@ -93,9 +93,9 @@ models:
       - name: Week
         description: Week number of the year (1-52/53).
 
-  - name: dim_review
+  - name: fact_reviews
     description: >
-      Review dimension summarizing product reviews with aggregate ratings and review text.
+      Contains summarized product reviews with aggregate ratings and review text.
     columns:
       - name: Product_id
         description: Product identifier.
@@ -118,9 +118,9 @@ models:
       - name: Review_text
         description: Concatenated review texts for the product.
 
-  - name: dim_webtraffic
+  - name: fact_webtraffic
     description: >
-      Web traffic dimension aggregating customer interactions by page and action type.
+      Web traffic table aggregating customer interactions by page and action type.
     columns:
       - name: Customer_id
         description: Customer identifier.
@@ -141,9 +141,9 @@ models:
               arguments:
                 min_value: 0
 
-  - name: dim_platform_sentiments
+  - name: fact_platform_sentiments
     description: >
-      Platform sentiments dimension aggregating sentiment data by social media platform.
+      Platform sentiments table aggregating sentiment data by social media platform.
     columns:
       - name: Platform
         description: Social media platform name.
