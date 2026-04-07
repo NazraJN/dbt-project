@@ -19,6 +19,8 @@ The project includes SCD2 historical dimensions, fact tables, and temporal logic
 - Snowflake as the cloud data warehouse
 - SQL for data modeling and transformations
 
+---
+
 ## Run the project
 - Build models - dbt run
 
